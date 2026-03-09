@@ -1,257 +1,230 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Nguyễn Huy Hoàng — Software Developer</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<title>NHH.EXE | System Architect Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@400;700;900&display=swap" rel="stylesheet"/>
 <style>
   :root {
-    --bg: #030508;
-    --bg2: #070a13;
-    --surface: #0d121d;
-    --border: rgba(0, 229, 255, 0.1);
-    --accent: #00e5ff; /* Cyan Electric */
-    --accent-glow: rgba(0, 229, 255, 0.3);
-    --text: #f0f4f8;
-    --muted: #8492a6;
+    --bg: #0d0f14;
+    --terminal: #161b22;
+    --accent: #58a6ff; /* GitHub Blue */
+    --success: #3fb950;
+    --text: #c9d1d9;
+    --dim: #8b949e;
+    --border: #30363d;
   }
 
-  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior: smooth; }
+  * { margin:0; padding:0; box-sizing:border-box; scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+  code, pre { font-family: 'Fira Code', monospace; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Syne', sans-serif;
-    overflow-x: hidden;
-    line-height: 1.6;
-  }
-
-  /* === CUSTOM CURSOR === */
-  .cursor {
-    width: 8px; height: 8px; background: var(--accent); border-radius: 50%;
-    position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%);
-  }
-  .cursor-ring {
-    width: 30px; height: 30px; border: 1.5px solid var(--accent-glow); border-radius: 50%;
-    position: fixed; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%);
-    transition: width 0.3s, height 0.3s;
-  }
-
-  /* === GRID BG === */
-  .grid-bg {
-    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  /* Background Grid */
+  .bg-grid {
+    position: fixed; inset: 0; z-index: -1;
     background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
-    background-size: 50px 50px;
+    background-size: 50px 50px; opacity: 0.15;
   }
 
-  /* === NAVIGATION === */
+  /* Navigation Bar */
   nav {
-    position: fixed; top: 0; width: 100%; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 25px 8%; background: rgba(3, 5, 8, 0.8); backdrop-filter: blur(15px);
-    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 15px 5%; border-bottom: 1px solid var(--border);
+    background: rgba(13, 15, 20, 0.9); backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 100;
   }
-  .logo { font-family: 'Space Mono', monospace; font-size: 18px; color: var(--accent); font-weight: 700; text-decoration: none; }
-  .nav-links { display: flex; gap: 40px; list-style: none; }
-  .nav-links a { font-family: 'Space Mono', monospace; font-size: 13px; color: var(--muted); text-decoration: none; text-transform: uppercase; transition: 0.3s; }
+  .nav-links { display: flex; gap: 25px; list-style: none; }
+  .nav-links a { 
+    text-decoration: none; color: var(--dim); font-family: 'Fira Code', monospace; 
+    font-size: 13px; transition: 0.3s; 
+  }
   .nav-links a:hover { color: var(--accent); }
 
-  /* === HERO === */
-  #hero {
-    height: 100vh; display: flex; align-items: center; padding: 0 8%;
-    position: relative; overflow: hidden;
-  }
-  .hero-content { max-width: 900px; z-index: 2; }
-  .hero-tag {
-    display: inline-block; font-family: 'Space Mono', monospace; color: var(--accent);
-    background: rgba(0, 229, 255, 0.05); border: 1px solid var(--accent-glow);
-    padding: 5px 15px; border-radius: 20px; margin-bottom: 25px; font-size: 12px;
-  }
-  .hero-title { font-size: clamp(40px, 8vw, 100px); font-weight: 800; line-height: 0.9; margin-bottom: 20px; }
-  .hero-title span { color: var(--accent); }
-  .hero-desc { max-width: 600px; color: var(--muted); font-size: 18px; margin-bottom: 40px; }
+  .status-dot { height: 8px; width: 8px; background: var(--success); border-radius: 50%; display: inline-block; margin-right: 8px; box-shadow: 0 0 10px var(--success); }
 
-  /* === BUTTONS === */
-  .btn-group { display: flex; gap: 20px; }
-  .btn {
-    padding: 15px 35px; font-family: 'Space Mono', monospace; font-weight: 700;
-    text-decoration: none; border-radius: 4px; transition: 0.3s; font-size: 14px;
+  /* Hero Section */
+  .hero { padding: 60px 5%; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: center; min-height: 85vh; }
+  .hero-text h1 { font-size: clamp(40px, 6vw, 70px); font-weight: 900; line-height: 1; margin-bottom: 20px; letter-spacing: -2px; }
+  .hero-text h1 span { color: var(--accent); }
+  .hero-text p { font-size: 18px; color: var(--dim); max-width: 550px; margin-bottom: 30px; }
+
+  /* Terminal Window */
+  .terminal-window {
+    background: var(--terminal); border: 1px solid var(--border); border-radius: 12px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5); overflow: hidden;
   }
-  .btn-primary { background: var(--accent); color: #000; }
-  .btn-primary:hover { box-shadow: 0 0 30px var(--accent-glow); transform: translateY(-3px); }
-  .btn-outline { border: 1px solid var(--accent); color: var(--accent); }
-  .btn-outline:hover { background: rgba(0, 229, 255, 0.1); transform: translateY(-3px); }
+  .terminal-header { background: #21262d; padding: 10px 15px; display: flex; gap: 8px; }
+  .dot { height: 12px; width: 12px; border-radius: 50%; }
+  .terminal-body { padding: 20px; font-size: 14px; line-height: 1.6; }
+  .prompt { color: var(--accent); font-weight: bold; }
 
-  /* === SECTIONS === */
-  section { padding: 100px 8%; position: relative; z-index: 1; }
-  .section-label { font-family: 'Space Mono', monospace; color: var(--accent); font-size: 14px; margin-bottom: 10px; display: block; }
-  .section-title { font-size: 45px; font-weight: 800; margin-bottom: 60px; }
+  /* Section Titles */
+  .section-title { padding: 80px 5% 30px; font-size: 22px; font-family: 'Fira Code', monospace; display: flex; align-items: center; }
+  .section-title::after { content: ""; flex: 1; height: 1px; background: var(--border); margin-left: 20px; }
 
-  /* === PROJECTS (BENTO) === */
-  .project-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
+  /* Projects */
+  .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; padding: 0 5% 60px; }
   .project-card {
-    background: var(--surface); border: 1px solid var(--border);
-    padding: 40px; border-radius: 12px; transition: 0.4s;
+    background: var(--terminal); border: 1px solid var(--border); border-radius: 12px;
+    padding: 25px; transition: 0.3s;
   }
-  .project-card:hover { border-color: var(--accent); transform: scale(1.02); }
-  .p-tech { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent); margin-bottom: 15px; }
-  .p-title { font-size: 24px; font-weight: 700; margin-bottom: 15px; }
-  .p-desc { color: var(--muted); font-size: 15px; margin-bottom: 25px; }
+  .project-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+  .tag { font-family: 'Fira Code', monospace; font-size: 11px; color: var(--accent); margin-bottom: 12px; display: block; }
+  .p-title { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+  .p-desc { font-size: 14px; color: var(--dim); margin-bottom: 20px; min-height: 45px; }
+  .p-links { display: flex; gap: 15px; font-family: 'Fira Code', monospace; font-size: 12px; }
+  .p-links a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); padding-bottom: 2px; }
+  .p-links a:hover { color: var(--accent); border-color: var(--accent); }
 
-  /* === EXPERIENCE === */
-  .exp-item {
-    border-left: 1px solid var(--accent); padding-left: 30px; position: relative; padding-bottom: 50px;
+  /* Skills */
+  .skills-container { padding: 0 5% 60px; display: flex; flex-wrap: wrap; gap: 10px; }
+  .skill-node { border: 1px solid var(--border); padding: 8px 16px; border-radius: 6px; font-size: 13px; font-family: 'Fira Code', monospace; transition: 0.3s; }
+  .skill-node:hover { background: rgba(88, 166, 255, 0.1); border-color: var(--accent); color: var(--accent); }
+
+  /* Contact Section */
+  .contact-info { padding: 0 5% 80px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+  .contact-item { font-family: 'Fira Code', monospace; font-size: 14px; }
+  .contact-item span { color: var(--accent); display: block; margin-bottom: 5px; font-size: 11px; text-transform: uppercase; }
+  .contact-item a { color: var(--text); text-decoration: none; transition: 0.2s; }
+  .contact-item a:hover { color: var(--accent); }
+
+  .btn {
+    padding: 12px 28px; border-radius: 6px; text-decoration: none; font-weight: 700;
+    display: inline-block; transition: 0.3s; font-size: 14px; font-family: 'Fira Code', monospace;
   }
-  .exp-item::before {
-    content: ''; position: absolute; left: -5px; top: 0; width: 10px; height: 10px;
-    background: var(--accent); border-radius: 50%;
-  }
-  .exp-date { font-family: 'Space Mono', monospace; color: var(--accent); font-size: 14px; }
-  .exp-role { font-size: 22px; font-weight: 700; margin: 5px 0; }
-  .exp-company { color: var(--muted); margin-bottom: 15px; font-style: italic; }
+  .btn-main { background: var(--accent); color: #0d0f14; margin-right: 15px; }
+  .btn-ghost { border: 1px solid var(--border); color: var(--text); }
 
-  /* === SKILLS === */
-  .skill-container { display: flex; flex-wrap: wrap; gap: 15px; }
-  .skill-tag {
-    background: var(--surface); border: 1px solid var(--border);
-    padding: 10px 20px; font-family: 'Space Mono', monospace; font-size: 14px;
-    border-radius: 4px; transition: 0.3s;
-  }
-  .skill-tag:hover { border-color: var(--accent); color: var(--accent); }
-
-  footer { text-align: center; padding: 60px; border-top: 1px solid var(--border); color: var(--muted); font-family: 'Space Mono', monospace; font-size: 12px; }
-
-  /* Responsive */
-  @media (max-width: 768px) {
-    .project-grid { grid-template-columns: 1fr; }
-    nav { padding: 20px 5%; }
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; text-align: center; }
+    .hero-text h1 { font-size: 45px; }
+    .terminal-window { display: none; }
     .nav-links { display: none; }
-    .hero-title { font-size: 50px; }
   }
 </style>
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-<div class="grid-bg"></div>
+<div class="bg-grid"></div>
 
 <nav>
-  <a href="#" class="logo">HOANG.DEV</a>
+  <div style="font-family: 'Fira Code', monospace; font-weight: 700; color: var(--accent);">NHH_SYS_v2.0</div>
   <ul class="nav-links">
-    <li><a href="#about">Về tôi</a></li>
-    <li><a href="#projects">Dự án</a></li>
-    <li><a href="#experience">Kinh nghiệm</a></li>
-    <li><a href="#contact">Liên hệ</a></li>
+    <li><a href="#about">/about</a></li>
+    <li><a href="#projects">/projects</a></li>
+    <li><a href="#skills">/skills</a></li>
+    <li><a href="#contact">/contact</a></li>
   </ul>
+  <div style="font-size: 12px; color: var(--dim);"><span class="status-dot"></span>AVAILABLE</div>
 </nav>
 
-<section id="hero">
-  <div class="hero-content">
-    <div class="hero-tag">Sẵn sàng cho vị trí Intern/Junior</div>
-    <h1 class="hero-title">NGUYỄN<br><span>HUY HOÀNG</span></h1>
-    <p class="hero-desc">
-      Sinh viên năm cuối ngành CNTT tại <strong>Đại học Sài Gòn</strong>. 
-      Chuyên sâu phát triển hệ thống với hệ sinh thái <strong>.NET, Java Spring Boot</strong> và <strong>Node.js</strong>.
-    </p>
-    <div class="btn-group">
-      <a href="#projects" class="btn btn-primary">Xem Dự Án</a>
-      <a href="CV-NHH.pdf" target="_blank" class="btn btn-outline">Mở CV (Resume)</a>
+<section class="hero" id="about">
+  <div class="hero-text">
+    <p style="font-family: 'Fira Code', monospace; color: var(--accent);">> INITIALIZING PROFILE...</p>
+    <h1>NGUYEN<br><span>HUY HOANG</span></h1>
+    <p>Final-year IT student at <strong>Saigon University</strong>. Full-stack Developer specialized in building scalable systems with .NET Core and Java Spring Boot.</p>
+    <div style="display: flex; gap: 10px;">
+      <a href="./CV-NHH.pdf" target="_blank" class="btn btn-main">RESUME.PDF</a>
+      <a href="https://github.com/NguyenHoang-pluto" target="_blank" class="btn btn-ghost">GITHUB</a>
+    </div>
+  </div>
+
+  <div class="terminal-window">
+    <div class="terminal-header">
+      <div class="dot" style="background: #ff5f56;"></div>
+      <div class="dot" style="background: #ffbd2e;"></div>
+      <div class="dot" style="background: #27c93f;"></div>
+    </div>
+    <div class="terminal-body">
+      <pre>
+<span class="prompt">~/huyhoang</span>$ whoami
+Nguyen Huy Hoang
+<span class="prompt">~/huyhoang</span>$ location
+Ho Chi Minh City, VN
+<span class="prompt">~/huyhoang</span>$ contact --list
+- Phone: (+84) 344293109
+- Email: huyhoangnguyenh2n004x@gmail.com
+<span class="prompt">~/huyhoang</span>$ stack --current
+.NET Core, Spring Boot, 
+React, Next.js, Docker
+<span class="prompt">~/huyhoang</span>$ <span style="animation: blink 1s infinite;">_</span>
+      </pre>
     </div>
   </div>
 </section>
 
-<section id="about">
-  <span class="section-label">01. Profile</span>
-  <h2 class="section-title">Tôi là ai?</h2>
-  <div style="max-width: 800px;">
-    <p class="hero-desc" style="color: var(--text);">
-      Một lập trình viên Fullstack trẻ năng động, luôn tập trung vào hiệu suất hệ thống và trải nghiệm người dùng. 
-      Tôi có kinh nghiệm làm việc với Docker, tối ưu hóa Database và xây dựng kiến trúc RESTful API chuẩn mực.
-    </p>
-    <div class="skill-container" style="margin-top: 30px;">
-      <div class="skill-tag">ASP.NET Core</div>
-      <div class="skill-tag">Spring Boot</div>
-      <div class="skill-tag">Next.js</div>
-      <div class="skill-tag">Docker</div>
-      <div class="skill-tag">SQL Server</div>
-      <div class="skill-tag">Redis Cache</div>
-      <div class="skill-tag">ReactJS</div>
-      <div class="skill-tag">TypeScript</div>
+<div class="section-title" id="projects">PROJECT_LOG</div>
+<section class="project-grid">
+  <div class="project-card">
+    <span class="tag">ASP.NET CORE • REACT • JWT</span>
+    <h3 class="p-title">Sales Admin System</h3>
+    <p class="p-desc">Real-time inventory management with RBAC and professional PDF/Excel reporting.</p>
+    <div class="p-links">
+      <a href="https://github.com/Vhuu08092004/quanlicuahang" target="_blank">Backend</a>
+      <a href="https://github.com/HoangHoan04/quanlybanhang-admin" target="_blank">Frontend</a>
+    </div>
+  </div>
+
+  <div class="project-card">
+    <span class="tag">SPRING BOOT • NEXT.JS • REDIS</span>
+    <h3 class="p-title">AI Resume Builder</h3>
+    <p class="p-desc">Smart CV generation platform optimized with Redis Cache and Docker.</p>
+    <div class="p-links">
+      <a href="https://github.com/Vhuu08092004/TaoCVJ2EE" target="_blank">Backend</a>
+      <a href="https://github.com/lmv2004/CV_Builder" target="_blank">Frontend</a>
+    </div>
+  </div>
+
+  <div class="project-card">
+    <span class="tag">LARAVEL • REACTJS • MYSQL</span>
+    <h3 class="p-title">Mini Supermarket</h3>
+    <p class="p-desc">Comprehensive mart management including HR, stock control, and daily statistics.</p>
+    <div class="p-links">
+      <a href="https://github.com/lmv2004/QuanLySieuThiMini" target="_blank">GitHub Repo</a>
     </div>
   </div>
 </section>
 
-<section id="projects">
-  <span class="section-label">02. Portfolio</span>
-  <h2 class="section-title">Dự án thực tế</h2>
-  <div class="project-grid">
-    <div class="project-card">
-      <div class="p-tech">C# • ASP.NET CORE • REACTJS</div>
-      <h3 class="p-title">Sales Admin Dashboard</h3>
-      <p class="p-desc">Hệ thống quản lý bán hàng đa nền tảng với kiến trúc decoupled. Tích hợp RBAC qua JWT, quản lý kho thời gian thực và báo cáo doanh thu chuyên nghiệp xuất file Excel/PDF.</p>
-      <a href="https://github.com/NguyenHoang-pluto" target="_blank" class="btn-outline btn" style="padding: 8px 20px;">GitHub</a>
-    </div>
+<div class="section-title" id="skills">TECH_STACK</div>
+<section class="skills-container">
+  <div class="skill-node">ASP.NET Core</div>
+  <div class="skill-node">Spring Boot</div>
+  <div class="skill-node">Next.js</div>
+  <div class="skill-node">TypeScript</div>
+  <div class="skill-node">Docker & Compose</div>
+  <div class="skill-node">Redis Cache</div>
+  <div class="skill-node">PostgreSQL</div>
+  <div class="skill-node">JWT / OAuth2</div>
+</section>
 
-    <div class="project-card">
-      <div class="p-tech">JAVA • SPRING BOOT • PYTHON AI</div>
-      <h3 class="p-title">AI Smart Resume Builder</h3>
-      <p class="p-desc">Nền tảng tạo CV thông minh tự động. Sử dụng Redis Cache để tăng tốc truy xuất template và triển khai hệ thống qua Docker Compose giúp scale dễ dàng.</p>
-      <a href="https://github.com/NguyenHoang-pluto" target="_blank" class="btn-outline btn" style="padding: 8px 20px;">GitHub</a>
-    </div>
-
-    <div class="project-card" style="grid-column: span 2;">
-      <div class="p-tech">LARAVEL • REACTJS • MYSQL</div>
-      <h3 class="p-title">Mini Supermarket System</h3>
-      <p class="p-desc">Giải pháp quản lý vận hành cho siêu thị mini: Quản lý nhân sự, kiểm kê hàng hóa và thống kê biến động doanh thu theo tháng/năm với biểu đồ trực quan.</p>
-      <a href="https://github.com/NguyenHoang-pluto" target="_blank" class="btn-outline btn" style="padding: 8px 20px;">GitHub</a>
-    </div>
+<div class="section-title" id="contact">CONTACT_CONNECT</div>
+<section class="contact-info">
+  <div class="contact-item">
+    <span>Email Address</span>
+    <a href="mailto:huyhoangnguyenh2n004x@gmail.com">huyhoangnguyenh2n004x@gmail.com</a>
+  </div>
+  <div class="contact-item">
+    <span>Phone Number</span>
+    <a href="tel:+84344293109">(+84) 344 293 109</a>
+  </div>
+  <div class="contact-item">
+    <span>Github Profile</span>
+    <a href="https://github.com/NguyenHoang-pluto" target="_blank">github.com/NguyenHoang-pluto</a>
+  </div>
+  <div class="contact-item">
+    <span>LinkedIn</span>
+    <a href="#">linkedin.com/in/huyhoang</a>
   </div>
 </section>
 
-<section id="experience">
-  <span class="section-label">03. Journey</span>
-  <h2 class="section-title">Kinh nghiệm & Học vấn</h2>
-  <div class="exp-item">
-    <div class="exp-date">2022 — Hiện tại</div>
-    <div class="exp-role">Sinh viên Công nghệ thông tin</div>
-    <div class="exp-company">Đại học Sài Gòn (SGU)</div>
-    <p class="p-desc">Tập trung nghiên cứu Cấu trúc dữ liệu, Giải thuật và Phân tích thiết kế hệ thống thông tin.</p>
-  </div>
-  <div class="exp-item">
-    <div class="exp-date">2024</div>
-    <div class="exp-role">Học viên Fullstack Web</div>
-    <div class="exp-company">CyberSoft Academy</div>
-    <p class="p-desc">Hoàn thành khóa huấn luyện thực chiến về ReactJS và xây dựng Backend Node.js.</p>
-  </div>
-</section>
-
-<section id="contact" style="text-align: center;">
-  <h2 class="section-title">Sẵn sàng hợp tác?</h2>
-  <p class="hero-desc" style="margin: 0 auto 40px;">Hiện tôi đang tìm kiếm cơ hội Thực tập/Junior tại TP.HCM. Hãy liên hệ với tôi qua:</p>
-  <div class="btn-group" style="justify-content: center;">
-    <a href="mailto:huyhoangnguyenh2n004x@gmail.com" class="btn btn-primary">Email Me</a>
-    <a href="https://github.com/NguyenHoang-pluto" target="_blank" class="btn btn-outline">GitHub Profile</a>
-  </div>
-</section>
-
-<footer>
-  <p>© 2026 NGUYỄN HUY HOÀNG — Built with Passion & Code.</p>
+<footer style="padding: 40px 5%; border-top: 1px solid var(--border); text-align: center; color: var(--dim); font-size: 12px; font-family: 'Fira Code', monospace;">
+  <p>© 2026 NGUYEN HUY HOANG. All systems operational.</p>
 </footer>
 
-<script>
-  // CURSOR ANIMATION
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  document.addEventListener('mousemove', e => {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-    ring.style.left = e.clientX + 'px';
-    ring.style.top = e.clientY + 'px';
-  });
-</script>
+<style>
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+</style>
 
 </body>
 </html>
